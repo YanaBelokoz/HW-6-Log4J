@@ -1,0 +1,45 @@
+Configuration:
+  Properties:
+    Property:
+      name: logger
+      value: logs_folder
+  Appends:
+    Console:
+      - name: myConsole
+        PatternLayout:
+          Pattern: "%level %d{yyy-MM-dd HH:mm} %class{1}:%L - %msg%n "
+
+    File:
+     -
+        name: myFile
+        fileName: ${logger}/log_file.log
+        PatternLayout:
+          Pattern: "%level %d{yyy-MM-dd HH:mm} %class{1}:%L - %msg%n "
+
+    RollingFile:
+      -
+        name: myRollingFile
+        fileName: ${logger}/rolling_file.log
+        filePattern: ${logger}/rollingFile.log
+        PatternLayout:
+          Pattern: "%level %d{yyy-MM-dd HH:mm} %class{1}:%L - %msg%n "
+        Policies:
+          TimeBasedTriggeringPolicy:
+            interval: 1
+            modulate: true
+
+
+
+  Loggers:
+     Root:
+      level: all
+      AppenderRef:
+        - ref: myFile
+          level: error
+        - ref: myConsole
+          level: info
+        - ref: myRollingFile
+          level: warn
+
+     Logger:
+
